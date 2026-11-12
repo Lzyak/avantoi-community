@@ -1,0 +1,562 @@
+/* Avantoi Community
+   The brand's logo is white script on black, so the page is split in two:
+   Night (black) holds the brand, Day (white) holds the invitation and the button.
+   One typeface, Archivo: tracked capitals for headings, sentence case for reading. */
+
+@font-face {
+  font-family: "Archivo";
+  src: url("assets/fonts/archivo-latin-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --paper: #ffffff;
+  --ink: #000000;
+  --ink-hover: #2b2b2b;
+  --graphite: #555555;   /* secondary text on white, 7.4:1 */
+  --ash: #a3a3a3;        /* secondary text on black, 8.6:1 */
+  --hairline: #e4e4e4;
+  --mist: #f2f2f2;       /* message bubbles */
+
+  --font: "Archivo", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+
+  --step-xs: 0.75rem;    /* 12px small print */
+  --step-s: 0.8125rem;   /* 13px links, notes */
+  --step-0: 1rem;        /* 16px body */
+  --step-title: clamp(1.375rem, 1.05rem + 1.5vw, 2.25rem);
+
+  --gutter: max(1.25rem, env(safe-area-inset-left, 0px));
+  --gutter-r: max(1.25rem, env(safe-area-inset-right, 0px));
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+strong { font-weight: 600; }
+
+:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: -100px;
+  z-index: 20;
+  padding: 0.75rem 1rem;
+  background: var(--paper);
+  color: var(--ink);
+}
+.skip-link:focus { top: 0.75rem; }
+
+/* Small text links (privacy page header, footers) */
+.bar__link,
+.foot__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: var(--step-s);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.bar__link:hover,
+.foot__link:hover { text-decoration: underline; text-underline-offset: 0.3em; }
+
+/* =================== HOME =================== */
+
+.masthead {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: max(0.875rem, env(safe-area-inset-top, 0px)) var(--gutter-r) 0 var(--gutter);
+  color: var(--paper);
+}
+.masthead__mark { display: inline-flex; align-items: center; min-height: 44px; }
+.masthead__mark img { width: 44px; }
+
+.masthead__social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.masthead__social svg { width: 1rem; height: 1rem; flex: none; }
+.masthead__social:hover span { text-decoration: underline; text-underline-offset: 0.3em; }
+
+/* ---------- Night: the brand panel ---------- */
+.night {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  min-height: 46vh;
+  min-height: 46svh;
+  padding: 5rem var(--gutter-r) 3.5rem var(--gutter);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* The monogram at architectural scale, cropped by the panel edge */
+.night__monogram {
+  position: absolute;
+  width: 250%;
+  max-width: none;
+  right: -95%;
+  top: -4%;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.night__brand { position: relative; margin: 0; }
+
+/* The script is "written" left to right on load */
+.night__logo {
+  width: min(84vw, 400px);
+  animation: write 1.5s cubic-bezier(0.55, 0.1, 0.25, 1) 0.15s both;
+}
+
+.night__slot:empty { display: none; }
+
+/* ---------- Day: the invitation ---------- */
+.day {
+  display: flex;
+  flex-direction: column;
+}
+
+.invite {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 2.5rem var(--gutter-r) 3rem var(--gutter);
+  animation: settle 0.7s ease-out 0.7s both;
+}
+
+.invite__title {
+  margin: 0;
+  max-width: 18ch;
+  font-size: var(--step-title);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.invite__lede {
+  margin: 1rem 0 0;
+  max-width: 36ch;
+  color: var(--graphite);
+  text-wrap: pretty;
+}
+
+/* The Join buttons (main and phone bar) */
+.join,
+.dock__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.join:focus-visible,
+.dock__btn:focus-visible { outline-color: var(--ink); }
+.join__icon { width: 1.25rem; height: 1.25rem; flex: none; }
+
+.join {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  min-height: 60px;
+  margin-top: 1.75rem;
+  padding: 0 2rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.join:hover { background: var(--ink-hover); transform: translateY(-2px); }
+.join:active { transform: translateY(0) scale(0.99); }
+
+/* One sweep of light across the button, right after the logo finishes */
+.join::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.28) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: sheen 1.1s ease-in-out 2s 1 both;
+}
+
+.invite__assure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0.875rem 0 0;
+  font-size: var(--step-s);
+  line-height: 1.45;
+  color: var(--graphite);
+}
+.invite__assure svg { width: 0.8125rem; height: 0.8125rem; flex: none; }
+
+/* Channel preview: what followers receive */
+.preview {
+  width: 100%;
+  max-width: 22rem;
+  margin: 2.25rem 0 0;
+}
+.preview__card {
+  padding: 0.875rem;
+  border: 1px solid var(--hairline);
+  border-radius: 22px;
+  background: var(--paper);
+  color: var(--ink);
+  text-align: left;
+}
+.preview__head {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0 0.125rem 0.75rem;
+  border-bottom: 1px solid var(--hairline);
+}
+.preview__avatar {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--ink);
+}
+.preview__avatar img { width: 1.75rem; }
+.preview__name {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.preview__name small { font-size: var(--step-xs); font-weight: 400; color: var(--graphite); }
+.preview__tag {
+  margin-left: auto;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  color: var(--graphite);
+}
+.preview__feed {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.msg {
+  padding: 0.625rem 0.75rem 0.4rem;
+  border-radius: 4px 16px 16px 16px;
+  background: var(--mist);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.msg strong { display: block; margin-bottom: 0.125rem; font-size: 0.8125rem; }
+.msg time {
+  display: block;
+  margin-top: 0.125rem;
+  text-align: right;
+  font-size: 0.6875rem;
+  color: var(--graphite);
+  font-variant-numeric: tabular-nums;
+}
+.preview__caption {
+  margin: 0.875rem auto 0;
+  max-width: 34ch;
+  font-size: var(--step-s);
+  line-height: 1.55;
+  color: var(--graphite);
+  text-align: center;
+}
+
+/* Messages arrive one by one (class added by script.js only when motion is allowed) */
+.preview.is-waiting .msg { opacity: 0; transform: translateY(10px) scale(0.98); }
+.preview.is-in .msg {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.preview.is-in .msg:nth-child(2) { transition-delay: 0.7s; }
+.preview.is-in .msg:nth-child(3) { transition-delay: 1.4s; }
+
+/* How to join: a real sequence, so it is numbered */
+.steps {
+  width: 100%;
+  margin-top: 2.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--hairline);
+  text-align: left;
+}
+.steps__title {
+  margin: 0 0 1rem;
+  font-size: var(--step-s);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.steps__list {
+  display: grid;
+  gap: 0.875rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.steps__list li {
+  display: grid;
+  grid-template-columns: 1.75rem 1fr;
+  align-items: baseline;
+}
+.steps__n {
+  display: inline-grid;
+  place-items: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  transform: translateY(-1px);
+}
+
+/* QR code: only shown on computers */
+.scan { display: none; }
+
+/* ---------- footer ---------- */
+.foot {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 1.5rem;
+  margin-top: auto;
+  padding: 0.5rem var(--gutter-r) max(1.5rem, env(safe-area-inset-bottom, 0px)) var(--gutter);
+  border-top: 1px solid var(--hairline);
+  font-size: var(--step-s);
+}
+.foot__copy { margin: 0; letter-spacing: 0.04em; }
+.foot__contact {
+  grid-column: 1 / -1;
+  margin: 0.25rem 0 0;
+  color: var(--graphite);
+}
+.foot__contact a {
+  display: inline-block;
+  padding: 0.9375rem 0;  /* 44px tap target without moving the layout */
+  margin: -0.9375rem 0;
+  color: var(--ink);
+  text-underline-offset: 0.2em;
+}
+/* room so the phone join bar never covers the footer */
+.home .foot { padding-bottom: calc(max(1.5rem, env(safe-area-inset-bottom, 0px)) + 80px); }
+
+/* ---------- phone join bar ---------- */
+.dock {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 10;
+  padding: 0.625rem var(--gutter-r) max(0.625rem, env(safe-area-inset-bottom, 0px)) var(--gutter);
+  background: var(--paper);
+  border-top: 1px solid var(--hairline);
+  transform: translateY(110%);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.dock.is-shown { transform: none; }
+.dock__btn { min-height: 56px; }
+
+/* ---------- tablet ---------- */
+@media (min-width: 640px) {
+  .night { min-height: 52vh; min-height: 52svh; padding-top: 6rem; }
+  .night__monogram { width: 175%; right: -55%; top: -10%; }
+  .night__logo { width: 460px; }
+  .join { display: inline-flex; width: auto; min-width: 360px; }
+  .steps { max-width: 26rem; }
+}
+
+/* ---------- desktop: the split ---------- */
+@media (min-width: 900px) {
+  .stage {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  /* the mark sits on black, the TikTok link on white */
+  .masthead { color: var(--ink); padding-top: 1.25rem; }
+  .masthead__mark { color: var(--paper); }
+  .masthead__mark img { width: 54px; }
+
+  .night {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(2rem, 5vh, 3.5rem);
+    padding: 6rem 3rem 4rem;
+  }
+  .night__monogram { width: 175%; right: -48%; top: 6%; }
+  .night__logo { width: min(32vw, 520px); }
+  .night__slot { position: relative; width: 100%; display: flex; justify-content: center; }
+  .night .preview { margin: 0; }
+  .night .preview__card { border-color: transparent; }
+  .night .preview__caption { color: var(--ash); }
+
+  .day { min-height: 100vh; min-height: 100svh; }
+  .invite {
+    flex: 1;
+    justify-content: center;
+    max-width: 34rem;
+    padding: 5.5rem 3rem 2.5rem;
+  }
+
+  .steps { max-width: 24rem; margin-top: 2rem; padding-top: 1.5rem; }
+  .steps__list { gap: 0.625rem; }
+
+  .scan {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 24rem;
+    margin: 1.5rem 0 0;
+    text-align: left;
+    font-size: var(--step-s);
+    line-height: 1.5;
+    color: var(--graphite);
+  }
+  .scan__code {
+    width: 76px;
+    flex: none;
+    padding: 6px;
+    border: 1px solid var(--hairline);
+    image-rendering: pixelated;
+  }
+
+  .foot { padding-left: 3rem; padding-right: 3rem; }
+  .home .foot { padding-bottom: 1.5rem; }
+  .dock { display: none; }
+}
+
+@media (min-width: 1440px) {
+  .invite__lede { font-size: 1.0625rem; }
+}
+
+/* ---------- motion ---------- */
+@keyframes write {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes sheen {
+  to { transform: translateX(120%); }
+}
+@keyframes settle {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .night__logo,
+  .invite,
+  .join::after { animation: none; }
+  .join,
+  .dock { transition: none; }
+  .join:hover { transform: none; }
+}
+
+/* =================== PRIVACY PAGE =================== */
+
+.legal-page {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: max(1rem, env(safe-area-inset-top, 0px)) var(--gutter-r) 1rem var(--gutter);
+}
+.bar__mark { display: inline-flex; align-items: center; min-height: 44px; }
+.bar__mark img { width: 46px; }
+
+.doc {
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 6vh, 4rem) var(--gutter-r) 4rem var(--gutter);
+}
+.doc__title {
+  margin: 0;
+  font-size: var(--step-title);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.doc__meta { margin: 0.5rem 0 2.5rem; font-size: var(--step-s); color: var(--graphite); }
+.doc h2 {
+  margin: 2.25rem 0 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.doc p { margin: 0 0 1rem; max-width: 65ch; }
+.doc a { text-underline-offset: 0.2em; }
+
+@media (min-width: 1024px) {
+  .bar__mark img { width: 54px; }
+}
